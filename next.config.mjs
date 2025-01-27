@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['cdn.sanity.io'],
+      domains: ['cdn.sanity.io'],
     },
-};
-
-export default nextConfig;
+    async rewrites() {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'https://zkhlo23.apicdn.sanity.io/:path*',
+        },
+      ];
+    },
+  };
+  
+  export default nextConfig;
+  
