@@ -1,7 +1,7 @@
 "use client";
 
-import { data } from '@/app/components/DataFetching';
 import { useAtom } from "jotai";
+import { data, store } from '@/app/components/DataFetching';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion"; // Import framer-motion
@@ -20,7 +20,7 @@ interface Rating {
 
 const Dashboard = () => {
   const router = useRouter();
-  const [products] = useAtom(data); // Ensure that `data` is an array of Product objects
+  const [products] = useAtom(data, { store });
   const [totalAmount, setTotalAmount] = useState(0);
   const [totalStock, setTotalStock] = useState(0);
   const [categoryWiseAmount, setCategoryWiseAmount] = useState<{ [key: string]: number }>({});

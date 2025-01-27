@@ -1,53 +1,65 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image"; // Import Next.js Image component
 import { client } from "@/sanity/lib/client";
 
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+}
+
 const Category = () => {
   const router = useRouter();
-  const [products, setProducts] = useState<any[]>([]);
-  const [categoryWiseProducts, setCategoryWiseProducts] = useState<{ [key: string]: any[] }>({});
-  const categories = ['tshirt', 'short', 'jeans', 'hoodie', 'shirt'];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categoryWiseProducts, setCategoryWiseProducts] = useState<{ [key: string]: Product[] }>({});
+  
+  // Memoize the categories array to prevent re-renders
+  const categories = useMemo(() => ['tshirt', 'short', 'jeans', 'hoodie', 'shirt'], []);
 
   useEffect(() => {
-    // Fetch products from Sanity
     const fetchProducts = async () => {
-      const query = `*[_type == "products"]{
-        sizes, price, name, description,
-        "image": image.asset->url,
-        "id": _id,
-        colors, isNew, category
-      }`;
-
-      const result = await client.fetch(query);
-      setProducts(result);
+      try {
+        const query = `*[_type == "products"]{
+          "id": _id,
+          name,
+          price,
+          "image": image.asset->url,
+          category
+        }`;
+        
+        const result = await client.fetch(query);
+        setProducts(result);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
     };
 
     fetchProducts();
   }, []);
 
   useEffect(() => {
-    let categoryProducts: { [key: string]: any[] } = {};
-
-    products.forEach((product) => {
-      const category = product.category || 'Uncategorized';
-      if (!categoryProducts[category]) {
-        categoryProducts[category] = [];
-      }
-      categoryProducts[category].push(product);
+    const categoryProducts: { [key: string]: Product[] } = {};
+    
+    // Initialize all categories with empty arrays
+    categories.forEach(category => {
+      categoryProducts[category] = [];
     });
 
-    // Ensure all categories are included in the breakdown, even if there are no products in some
-    categories.forEach((category) => {
-      if (!categoryProducts[category]) {
-        categoryProducts[category] = [];
+    // Categorize products
+    products.forEach((product) => {
+      const category = product.category?.toLowerCase() || 'Uncategorized';
+      if (categories.includes(category)) {
+        categoryProducts[category].push(product);
       }
     });
 
     setCategoryWiseProducts(categoryProducts);
-  }, [products, categories]); // Added categories to dependency array
+  }, [products, categories]); // categories is now memoized, so it won't cause re-renders
 
   const handleProductClick = (productId: string) => {
     router.push(`/admin/product/${productId}`);

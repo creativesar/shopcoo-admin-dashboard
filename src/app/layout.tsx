@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import ConditionalSideBar from "./components/CondionalSideBar";
-import DataFetching from "./components/DataFetching";
+import { JotaiProvider } from './components/DataFetching';
 
 
 
@@ -29,12 +29,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <DataFetching/>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       {children}
-       <ConditionalSideBar/>
+        <JotaiProvider>
+          {children}
+          <ConditionalSideBar/>
+        </JotaiProvider>
       </body>
     </html>
   );
