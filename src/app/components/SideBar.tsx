@@ -36,7 +36,7 @@ const SideBar = () => {
   return (
     <div className="z-50">
       {/* Mobile Header */}
-      <div className="flex items-center justify-between p-4 bg-blue-700 text-white w-full fixed top-0 left-0 z-10 md:hidden shadow-lg">
+      <div className="flex items-center justify-between p-4 bg-black text-white w-full fixed top-0 left-0 z-10 md:hidden shadow-lg">
         <h1 className="text-xl font-bold tracking-wide">SHOP.CO Admin</h1>
         <button
           onClick={handleToggleSidebar}

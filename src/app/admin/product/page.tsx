@@ -53,7 +53,7 @@ export default function AdminPanel() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 py-12">
           <motion.h1
             className="text-5xl font-extrabold text-gray-900"
             initial={{ opacity: 0, y: -20 }}

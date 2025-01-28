@@ -67,7 +67,7 @@ const Category = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col items-center justify-center p-6 md:ml-64">
-      <div className="w-full max-w-6xl space-y-8">
+      <div className="w-full max-w-6xl space-y-8 py-12">
         <div className="flex justify-between items-center">
           <h1 className="text-5xl font-extrabold text-black">
             SHOP.CO Categories

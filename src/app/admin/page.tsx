@@ -48,7 +48,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col items-center justify-center p-6 md:ml-64">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col items-center justify-center p-6 py-20 md:ml-64">
       <motion.div
         className="w-full max-w-7xl space-y-12"
         variants={parentVariants}
