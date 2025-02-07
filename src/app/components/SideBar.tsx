@@ -30,7 +30,7 @@ const SideBar = () => {
     { path: "/admin/product", icon: <FaBox />, label: "Products" },
     { path: "/admin/category", icon: <FaList />, label: "Categories" },
     { path: "/admin/customers", icon: <FaUser />, label: "Customers" },
-    { path: "/admin/orders", icon: <FaUser />, label: "Orders" },
+    { path: "/admin/Orders", icon: <FaUser />, label: "Orders" },
   ];
 
   return (

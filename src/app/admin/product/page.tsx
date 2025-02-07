@@ -62,15 +62,7 @@ export default function AdminPanel() {
           >
             Products
           </motion.h1>
-          <motion.button
-            onClick={handleLogout}
-            className="px-6 py-3 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition-all transform hover:scale-105"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 200 }}
-          >
-            Logout
-          </motion.button>
+          
         </div>
 
         {/* Search Bar */}
