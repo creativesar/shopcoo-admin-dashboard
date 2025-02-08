@@ -5,7 +5,6 @@ import { data, categoryData, store } from '@/app/components/DataFetching';
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Product } from "@/app/components/interface";
-import SalesChart from "./SalesChart/page";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
@@ -35,17 +34,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6 py-20 md:ml-64">
-      {/* Fixed SalesChart at the Top */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="w-full max-w-5xl bg-white rounded-md shadow p-6 mb-6"
-      >
-        <h2 className="text-lg font-medium text-gray-700 text-center">Sales Overview</h2>
-        <SalesChart />
-      </motion.div>
-      
       <div className="w-full max-w-5xl space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <h1 className="text-3xl font-semibold text-gray-900">Dashboard</h1>
