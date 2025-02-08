@@ -3,20 +3,17 @@
 import { useState, useEffect } from 'react';
 
 const useSalesData = () => {
-  const [data, setData] = useState([]);
+  const [salesData, setSalesData] = useState([]);
 
   useEffect(() => {
-    // Fetch or generate sales data here
-    const fetchData = async () => {
-      const response = await fetch('/api/sales');
-      const result = await response.json();
-      setData(result);
-    };
-
-    fetchData();
+    // Fetch sales data from an API or other source
+    fetch('/api/sales')
+      .then(response => response.json())
+      .then(data => setSalesData(data))
+      .catch(error => console.error('Error fetching sales data:', error));
   }, []);
 
-  return data;
+  return salesData;
 };
 
 export default useSalesData;
