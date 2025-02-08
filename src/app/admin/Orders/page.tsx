@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import anime from "animejs";
 
 interface Order {
   _id: string;
@@ -32,9 +33,7 @@ export default function Orders() {
       try {
         const query = `*[_type == "order"]{
           _id,
-          customer->{
-            fullName
-          },
+          customer->{ fullName },
           totalAmount,
           status,
           orderDate,
@@ -50,9 +49,18 @@ export default function Orders() {
         setLoading(false);
       }
     };
-
     fetchOrders();
   }, []);
+
+  useEffect(() => {
+    anime({
+      targets: "tr",
+      opacity: [0, 1],
+      translateY: [20, 0],
+      delay: anime.stagger(100),
+      easing: "easeOutQuad",
+    });
+  }, [orders]);
 
   const filteredOrders = orders.filter(
     (order) =>
@@ -63,39 +71,45 @@ export default function Orders() {
 
   return (
     <motion.div 
-      className="min-h-screen bg-white p-6 md:ml-64"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
+      className="min-h-screen bg-gray-50 p-8 md:ml-64 flex flex-col items-center"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Orders</h1>
-
-      <div className="mb-6">
+      <h1 className="text-6xl font-extrabold text-gray-900 mb-10 text-center tracking-wide drop-shadow-lg">
+        Orders
+      </h1>
+      
+      <div className="flex flex-col md:flex-row gap-4 justify-center mb-6 w-full max-w-2xl">
         <input
           type="text"
-          className="w-full md:w-1/3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all ease-in-out duration-300 shadow-md hover:shadow-xl"
+          className="w-full p-4 border border-gray-300 rounded-xl shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 transition-all"
           placeholder="Search by Order ID or Customer Name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-
+      
       {loading ? (
-        <div className="flex justify-center text-center items-center space-x-2">
-          <FaSpinner className="animate-spin text-teal-500" size={30} />
-          <p className="text-gray-600">Loading orders...</p>
+        <div className="flex justify-center items-center">
+          <FaSpinner className="animate-spin text-blue-500" size={40} />
         </div>
       ) : (
-        <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-          <table className="min-w-full table-auto text-sm text-left text-gray-500">
-            <thead className="bg-gray-200 text-gray-700">
+        <motion.div 
+          className="overflow-x-auto bg-white shadow-2xl rounded-2xl p-6 w-full max-w-6xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <table className="min-w-full text-left text-gray-600 border-collapse">
+            <thead className="bg-gradient-to-r from-blue-300 to-blue-500 text-white text-lg">
               <tr>
-                <th className="px-4 py-3">Order ID</th>
-                <th className="px-4 py-3">Customer Name</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Total Items</th>
-                <th className="px-4 py-3">Order Date</th>
-                <th className="px-4 py-3">Total Amount</th>
+                <th className="px-6 py-4 rounded-tl-2xl">Order ID</th>
+                <th className="px-6 py-4">Customer</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Items</th>
+                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4 rounded-tr-2xl">Total</th>
               </tr>
             </thead>
             <tbody>
@@ -103,30 +117,27 @@ export default function Orders() {
                 filteredOrders.map((order) => (
                   <motion.tr 
                     key={order._id} 
-                    className="border-b hover:bg-gray-100 transition-all"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ type: "spring", stiffness: 200 }}
+                    className="border-b hover:bg-gray-100 transition-all cursor-pointer"
+                    whileHover={{ scale: 1.02 }}
                   >
-                    <td className="px-4 py-3 text-center">
-                      <Link href={`/orders/${order.orderId}`} passHref>
-                        <span className="text-blue-500 hover:underline cursor-pointer">{order.orderId}</span>
-                      </Link>
+                    <td className="px-6 py-4 text-blue-500 text-lg font-semibold">
+                      <Link href={`/orders/${order.orderId}`}>{order.orderId}</Link>
                     </td>
-                    <td className="px-4 py-3 text-center">{order.customer?.fullName || "N/A"}</td>
-                    <td className="px-4 py-3 text-center font-bold text-green-500">{order.status.toUpperCase()}</td>
-                    <td className="px-4 py-3 text-center">{order.items.length}</td>
-                    <td className="px-4 py-3 text-center">{new Date(order.orderDate).toLocaleDateString()}</td>
-                    <td className="px-4 py-3 text-center">${order.totalAmount}</td>
+                    <td className="px-6 py-4 text-lg font-medium">{order.customer?.fullName || "N/A"}</td>
+                    <td className="px-6 py-4 font-bold text-lg" style={{ color: order.status === 'delivered' ? 'green' : 'red' }}>{order.status.toUpperCase()}</td>
+                    <td className="px-6 py-4 text-lg">{order.items.length}</td>
+                    <td className="px-6 py-4 text-lg">{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td className="px-6 py-4 text-lg font-semibold">${order.totalAmount.toFixed(2)}</td>
                   </motion.tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6} className="text-center px-4 py-3 text-gray-600">No orders found</td>
+                  <td colSpan={6} className="text-center py-6 text-lg">No orders found</td>
                 </tr>
               )}
             </tbody>
           </table>
-        </div>
+        </motion.div>
       )}
     </motion.div>
   );
