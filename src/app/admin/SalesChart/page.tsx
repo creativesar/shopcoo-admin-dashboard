@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import useSalesData from "src/app/components/useSalesData";
+import useSalesData from "@/app/components/useSalesData";
 
 const SalesChart = () => {
   const salesData = useSalesData();
