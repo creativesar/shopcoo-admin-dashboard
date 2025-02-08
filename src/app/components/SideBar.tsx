@@ -34,7 +34,7 @@ const SideBar = () => {
     { path: "/admin/product", icon: <FaBox />, label: "Products" },
     { path: "/admin/category", icon: <FaList />, label: "Categories" },
     { path: "/admin/customers", icon: <FaUser />, label: "Customers" },
-    { path: "/admin/orders", icon: <FaUser />, label: "Orders" },
+    { path: "/admin/Orders", icon: <FaUser />, label: "Orders" },
   ];
 
   return (
@@ -68,6 +68,15 @@ const SideBar = () => {
         </motion.div>
 
         <nav className="flex flex-col gap-5 h-full">
+          <motion.button
+            onClick={handleLogout}
+            className="flex items-center gap-4 text-lg font-semibold bg-red-500 p-4 rounded-lg transition-all text-white shadow-lg hover:bg-red-600"
+            whileHover={{ scale: 1.05, rotate: -5 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <FaSignOutAlt /> {sidebarOpen && "Logout"}
+          </motion.button>
+
           {navItems.map((item) => (
             <motion.button
               key={item.path}
@@ -83,15 +92,6 @@ const SideBar = () => {
               {sidebarOpen && item.label}
             </motion.button>
           ))}
-          
-          <motion.button
-            onClick={handleLogout}
-            className="flex items-center gap-4 text-lg font-semibold bg-red-500 p-4 rounded-lg transition-all text-white mt-auto shadow-lg hover:bg-red-600"
-            whileHover={{ scale: 1.05, rotate: -5 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <FaSignOutAlt /> {sidebarOpen && "Logout"}
-          </motion.button>
         </nav>
       </motion.aside>
 
